@@ -1,36 +1,31 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Giraffe
 
-# Getting Started
+Giraffe is an app that lets you log data points and chart them on a graph. 
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+This project was bootstrapped [without a framework](https://reactnative.dev/docs/getting-started-without-a-framework) using  `npx @react-native-community/cli@latest init`
 
-## Step 1: Start Metro
+### Libraries
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+Some important libraries/packages that this app uses includes:
+- Navigation/Routing: [React Navigation](https://reactnavigation.org/)
+- UI Framework: [React Native Paper](https://callstack.github.io/react-native-paper/)
+- State Management: [Redux](https://redux.js.org/)
+  - or native? https://reactnative.dev/docs/state
+- HTTP client: [Axios](https://github.com/axios/axios)
+- Charts: [React Native Gifted Charts](https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts)
+- Storage:
+  - Local Storage when not signed in: https://rnmmkv.vercel.app/#/
+  - or this? https://github.com/mrousavy/react-native-mmkv
+  - Cloud Storage when signed in: Firebase?
+  - Use Firebase OAuth2 for sign in.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Prerequisites and Dev Setup
 
-```sh
-# Using npm
-npm start
+This project requires Java 17 and Node 18.18 or later. To set up your dev environment, follow the [React Native Guide](https://reactnative.dev/docs/set-up-your-environment). This project **DOES NOT** use Expo.
 
-# OR using Yarn
-yarn start
-```
+After you clone this repo, run `npm install`
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
+~~If you're on macOS, also run `cd ios` and `pod install`~~
 
 ### iOS
 
@@ -50,48 +45,65 @@ bundle exec pod install
 
 For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
 
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
 If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
 
 This is one way to run your app — you can also build it directly from Android Studio or Xcode.
 
-## Step 3: Modify your app
+### VS Code
 
-Now that you have successfully run the app, let's make changes!
+If using VSCode, make sure the following extensions are installed:
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- React Native Tools (msjsdiag.vscode-react-native)
+- ESLint (dbaeumer.vscode-eslint)
+- Prettier (esbenp.prettier-vscode)
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## Starting/Running the App
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+To start the app, first run `npm start` to start the React Native runtime. Then open another terminal and run `npm run android` to start the app in an Android simulator or `npm run ios` to start the app in an iOS simulator.
 
-## Congratulations! :tada:
+Note: If you get an exception when starting the app that the simulator was not running, it's possible that the runtime tried to connect before the emulator was finished starting up, so just run npm run android or npm run ios again after the emulator is started.
 
-You've successfully run and modified your React Native App. :partying_face:
+## Debugging the App
 
-### Now what?
+Debugging React Native apps requires Chrome to be installed. Once the app is running, press `Ctrl-M` or `Command-M` to bring up the Dev Menu. Then select `Debug`. This will open a debugging window in your browser. You can also connect to the debugger by navigating to http://localhost:8081/debugger-ui in your browser. Then open the browser Dev Tools, and select Sources. You will find the sources available to debug under debuggerWorker. For more information about debugging see here: https://reactnative.dev/docs/debugging#chrome-developer-tools
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+Note: Depending on which browser you use to debug, you may see an exception from a browser extension. This is most likely caused by the fact that the React Native debugger is incompatible with the React Dev Tools browser extension. So try debugging with a Chromium based browser that doesn't have the React Dev Tools extension installed, or disable the React Dev Tools extension in the browser.
 
-# Troubleshooting
+### React Dev Tools
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Since the React Dev Tools browser extension is incompatible with React Native, you can use `npx react-devtools` to run a stand-alone instance of React Dev Tools which is compatible with both React and React Native.
 
-# Learn More
+## Building an Android Debug APK
 
-To learn more about React Native, take a look at the following resources:
+To build an apk file that you can debug on your device (or emulator), run the following commands:
+```bash
+  npm run build-android
+  cd android
+  ./gradlew assembleDebug
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This will put a file named `app-debug.apk` in `android/app/build/outputs/apk/debug/`
+
+## Building an Android Release APK
+
+To make a release build to install on your device (or emulator), run the following commands:
+```bash
+  npm run build-android
+  cd android
+  ./gradlew assemble
+```
+
+This will put a file named `app-release-unsigned.apk` in `android/app/build/outputs/apk/release/`
+
+## Signing an Android Release APK
+
+Note: `zipalign` and `apksigner` will be in `$ANDROID_HOME/build-tools/<version>`
+```
+zipalign -v -p 4 app-release-unsigned.apk app-release-unsigned-aligned.apk
+apksigner sign --ks <path_to_your_private_key>.jks --out app-release.apk app-release-unsigned-aligned.apk
+apksigner verify app-release.apk
+```
+
+You can then upload `app-release.apk` to the Play Console when creating a Production Release.
+
+For more information on building, deploying, and signing the apk file, see here: https://developer.android.com/build/building-cmdline
