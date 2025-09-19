@@ -23,7 +23,13 @@ Some important libraries/packages that this app uses includes:
 
 This project requires Java 17 and Node 18.18 or later. To set up your dev environment, follow the [React Native Guide](https://reactnative.dev/docs/set-up-your-environment). This project **DOES NOT** use Expo.
 
-After you clone this repo, run `npm install`
+This project contains a `.tool-versions` file, so if you have [asdf](https://asdf-vm.com/) installed, you can run the following to make sure you have the proper versions of Java and NodeJS installed for this project:
+```sh
+asdf install java
+asdf install nodejs
+```
+
+Once Java and NodeJS are installed, run `npm install`
 
 ~~If you're on macOS, also run `cd ios` and `pod install`~~
 
