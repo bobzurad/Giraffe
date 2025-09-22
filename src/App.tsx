@@ -22,6 +22,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import WelcomeSection from './components/WelcomeSection';
+import LineChartDemo from './components/LineChartDemo';
 
 const styles = StyleSheet.create({
   highlight: {
@@ -54,8 +55,16 @@ function App(): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <ScrollView style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
+        <View style={{paddingRight: safePadding, paddingBottom: safePadding}}>
           <Header />
+        </View>
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            paddingHorizontal: safePadding,
+            paddingTop: safePadding,
+          }}>
+          <LineChartDemo />
         </View>
         <View
           style={{
