@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-vector-icons/material-design-icons": "^12.3.0",
+    "jotai": "^2.15.0",
     "react": "19.0.0",
     "react-native": "0.79.0",
     "react-native-gifted-charts": "^1.4.64",

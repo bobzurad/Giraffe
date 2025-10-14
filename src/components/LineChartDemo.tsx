@@ -1,5 +1,7 @@
 import {StyleSheet, View} from 'react-native';
+import {useAtom} from 'jotai';
 import {LineChart} from 'react-native-gifted-charts';
+import {chartDataAtom} from '../context/atoms';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,11 +12,11 @@ const styles = StyleSheet.create({
 });
 
 const LineChartDemo = () => {
-  const data = [{value: 160}, {value: 150}, {value: 143}, {value: 146}];
+  const [chartData] = useAtom(chartDataAtom);
 
   return (
     <View style={styles.container}>
-      <LineChart data={data} curved yAxisOffset={140} />
+      <LineChart data={chartData} curved yAxisOffset={140} />
     </View>
   );
 };

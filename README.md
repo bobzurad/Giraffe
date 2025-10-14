@@ -9,15 +9,15 @@ This project was bootstrapped [without a framework](https://reactnative.dev/docs
 Some important libraries/packages that this app uses includes:
 - Navigation/Routing: [React Navigation](https://reactnavigation.org/)
 - UI Framework: [React Native Paper](https://callstack.github.io/react-native-paper/)
-- State Management: [Redux](https://redux.js.org/)
-  - or native? https://reactnative.dev/docs/state
+- State Management: [Jotai](https://jotai.org/)
 - HTTP client: [Axios](https://github.com/axios/axios)
 - Charts: [React Native Gifted Charts](https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts)
-- Storage:
-  - Local Storage when not signed in: https://rnmmkv.vercel.app/#/
-  - or this? https://github.com/mrousavy/react-native-mmkv
-  - Cloud Storage when signed in: Firebase?
-  - Use Firebase OAuth2 for sign in.
+- Storage: [Jotai Storage](https://jotai.org/docs/utilities/storage)
+  - Other options:
+    - Local Storage when not signed in: https://rnmmkv.vercel.app/#/
+    - or this? https://github.com/mrousavy/react-native-mmkv
+    - Cloud Storage when signed in: Firebase?
+    - Use Firebase OAuth2 for sign in.
 
 ## Prerequisites and Dev Setup
 
