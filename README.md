@@ -51,6 +51,16 @@ bundle exec pod install
 
 For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
 
+#### React Native Paper Setup for iOS
+
+Since this project uses [React Native Paper](https://callstack.github.io/react-native-paper/docs/guides/getting-started), there are some additional steps needed for iOS:
+
+```sh
+npx pod-install
+```
+
+After adding a new font, [following these instructions](https://github.com/oblador/react-native-vector-icons/blob/master/docs/SETUP-REACT-NATIVE.md) for iOS.
+
 ### VS Code
 
 If using VSCode, make sure the following extensions are installed:
