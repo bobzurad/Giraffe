@@ -14,3 +14,5 @@ export const chartDataAtom = atom([
   {value: 143, unit: 'lbs'},
   {value: 146, unit: 'lbs'},
 ] as DataPoints);
+
+export const addDataPointDialogVisibleAtom = atom(false);
