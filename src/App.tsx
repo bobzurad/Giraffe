@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -10,6 +9,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import WelcomeSection from './components/WelcomeSection';
 import LineChartDemo from './components/LineChartDemo';
+import DataPointList from './components/DataPointList';
 
 const styles = StyleSheet.create({
   highlight: {
@@ -29,13 +29,12 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView>
-        <LineChartDemo />
-        <WelcomeSection title="Step One">
-          Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-          screen and then come back to see your edits.
-        </WelcomeSection>
-      </ScrollView>
+      <LineChartDemo />
+      <DataPointList />
+      <WelcomeSection title="Step One">
+        Edit <Text style={styles.highlight}>App.tsx</Text> to change this screen
+        and then come back to see your edits.
+      </WelcomeSection>
     </View>
   );
 }
