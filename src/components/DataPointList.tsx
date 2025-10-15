@@ -9,9 +9,10 @@ const DataPointList = () => {
   return (
     <ScrollView>
       <List.Section title="Measurements">
-        {chartData.map(dataPoint => {
+        {chartData.map((dataPoint, index) => {
           return (
             <List.Item
+              key={index}
               title={dataPoint.value.toString() + ' ' + dataPoint.unit}
             />
           );
