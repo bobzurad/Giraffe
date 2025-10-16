@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 });
 
 function App(): React.JSX.Element {
-  const [addDataPointDialogVisible, setAddDataPointDialogVisible] = useAtom(
+  const [, setAddDataPointDialogVisible] = useAtom(
     addDataPointDialogVisibleAtom,
   );
   const isDarkMode = useColorScheme() === 'dark';

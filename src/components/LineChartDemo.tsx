@@ -16,7 +16,12 @@ const LineChartDemo = () => {
 
   return (
     <View style={styles.container}>
-      <LineChart data={chartData} curved yAxisOffset={140} />
+      <LineChart
+        key={chartData.length} // chart will re-render when key changes
+        data={chartData} // chart does not re-render when data changes
+        curved
+        yAxisOffset={140}
+      />
     </View>
   );
 };
