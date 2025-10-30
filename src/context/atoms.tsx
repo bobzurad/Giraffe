@@ -10,6 +10,10 @@ type DataPoint = {
 
 type DataPoints = DataPoint[];
 
+type SetChartDataArgs = {
+  shouldSort: boolean;
+};
+
 // --------------- Internal Atoms -------------------------------- //
 
 const _chartDataAtom = atom([
@@ -35,25 +39,28 @@ const _chartDataAtom = atom([
   },
 ] as DataPoints);
 
-
 // --------------- Atoms used by Components ---------------------- //
 
 export const chartDataAtom = atom(
   // components use the data sorted by date
-  (get) => {
+  get => {
     // sort the data when getting the data
     const chartData = get(_chartDataAtom);
     return chartData.sort((a, b) => {
       return b.date.getTime() - a.date.getTime();
     });
   },
-  (get, set) => {
-    set(_chartDataAtom, chartData =>
-      // sort the data after setting the data
-      chartData.sort((a, b) => {
-        return b.date.getTime() - a.date.getTime();
-      }),
-    );
+  // setter uses args object to determine if sort should happen
+  (get, set, args: SetChartDataArgs) => {
+    if (args.shouldSort) {
+      set(_chartDataAtom, chartData =>
+        chartData.sort((a, b) => {
+          return b.date.getTime() - a.date.getTime();
+        }),
+      );
+    } else {
+      set(_chartDataAtom, chartData => chartData);
+    }
   },
 );
 
