@@ -26,7 +26,7 @@ const AddDataPointDialog = () => {
 
   const addDataPoint = () => {
     chartData.push({date: new Date(), value: Number(inputValue), unit: 'lbs'});
-    setChartData(chartData);
+    setChartData(); // make sure the set function gets called to sort the data
     setAddDataPointDialogVisible(false);
     closeDialog();
   };
