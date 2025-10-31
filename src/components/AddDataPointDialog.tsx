@@ -25,7 +25,15 @@ const AddDataPointDialog = () => {
   );
 
   const addDataPoint = () => {
-    chartData.push({date: new Date(), value: Number(inputValue), unit: 'lbs'});
+    chartData.push({
+      date: new Date(),
+      label: new Date().toLocaleDateString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+      }),
+      value: Number(inputValue),
+      unit: 'lbs',
+    });
     setChartData({shouldSort: true});
     setAddDataPointDialogVisible(false);
     closeDialog();

@@ -4,6 +4,7 @@ import {atom} from 'jotai';
 
 type DataPoint = {
   date: Date;
+  label: string;
   value: number;
   unit: string;
 };
@@ -14,26 +15,43 @@ type SetChartDataArgs = {
   shouldSort: boolean;
 };
 
+// --------------- Internal Functions ---------------------------- //
+
+function getDateMinusDays(numDays: number): Date {
+  return new Date(new Date().setDate(new Date().getDate() - numDays));
+}
+
+function getLabel(numDays: number): string {
+  return getDateMinusDays(numDays).toLocaleDateString('en-US', {
+    month: 'numeric',
+    day: 'numeric',
+  });
+}
+
 // --------------- Internal Atoms -------------------------------- //
 
 const _chartDataAtom = atom([
   {
-    date: new Date(new Date().setDate(new Date().getDate() - 5)),
+    date: getDateMinusDays(5),
+    label: getLabel(5),
     value: 160,
     unit: 'lbs',
   },
   {
-    date: new Date(new Date().setDate(new Date().getDate() - 3)),
+    date: getDateMinusDays(3),
+    label: getLabel(3),
     value: 150,
     unit: 'lbs',
   },
   {
-    date: new Date(new Date().setDate(new Date().getDate() - 4)),
+    date: getDateMinusDays(4),
+    label: getLabel(4),
     value: 143,
     unit: 'lbs',
   },
   {
-    date: new Date(new Date().setDate(new Date().getDate() - 2)),
+    date: getDateMinusDays(2),
+    label: getLabel(2),
     value: 146,
     unit: 'lbs',
   },
@@ -52,6 +70,7 @@ export const chartDataAtom = atom(
   },
   // setter uses args object to determine if sort should happen
   (get, set, args: SetChartDataArgs) => {
+    // TODO: update args. remove shouldSort. add sortDirection: { 'asc', 'desc' }
     if (args.shouldSort) {
       set(_chartDataAtom, chartData =>
         chartData.sort((a, b) => {

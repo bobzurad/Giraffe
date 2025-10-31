@@ -21,6 +21,8 @@ const LineChartDemo = () => {
         data={chartData} // chart does not re-render when data changes
         curved
         yAxisOffset={140}
+        isAnimated
+        focusEnabled
       />
     </View>
   );
