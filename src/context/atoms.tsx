@@ -1,6 +1,12 @@
 import {atom} from 'jotai';
 
-// --------------- Types ----------------------------------------- //
+// --------------- Types & Enums --------------------------------- //
+
+export enum SortDirection {
+  ASC,
+  DESC,
+  NONE, // do not sort
+}
 
 type DataPoint = {
   date: Date;
@@ -12,7 +18,7 @@ type DataPoint = {
 type DataPoints = DataPoint[];
 
 type SetChartDataArgs = {
-  shouldSort: boolean;
+  sortDirection: SortDirection;
 };
 
 // --------------- Internal Functions ---------------------------- //
@@ -70,14 +76,20 @@ export const chartDataAtom = atom(
   },
   // setter uses args object to determine if sort should happen
   (get, set, args: SetChartDataArgs) => {
-    // TODO: update args. remove shouldSort. add sortDirection: { 'asc', 'desc' }
-    if (args.shouldSort) {
+    if (args.sortDirection === SortDirection.ASC) {
+      set(_chartDataAtom, chartData =>
+        chartData.sort((a, b) => {
+          return a.date.getTime() - b.date.getTime();
+        }),
+      );
+    } else if (args.sortDirection === SortDirection.DESC) {
       set(_chartDataAtom, chartData =>
         chartData.sort((a, b) => {
           return b.date.getTime() - a.date.getTime();
         }),
       );
     } else {
+      // do not sort
       set(_chartDataAtom, chartData => chartData);
     }
   },

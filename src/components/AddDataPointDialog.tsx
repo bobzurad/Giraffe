@@ -8,7 +8,11 @@ import {
   Portal,
   TextInput,
 } from 'react-native-paper';
-import {addDataPointDialogVisibleAtom, chartDataAtom} from '../context/atoms';
+import {
+  addDataPointDialogVisibleAtom,
+  chartDataAtom,
+  SortDirection,
+} from '../context/atoms';
 
 const styles = StyleSheet.create({
   inputValue: {
@@ -34,7 +38,7 @@ const AddDataPointDialog = () => {
       value: Number(inputValue),
       unit: 'lbs',
     });
-    setChartData({shouldSort: true});
+    setChartData({sortDirection: SortDirection.DESC});
     setAddDataPointDialogVisible(false);
     closeDialog();
   };
