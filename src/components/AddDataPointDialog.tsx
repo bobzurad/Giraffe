@@ -8,11 +8,7 @@ import {
   Portal,
   TextInput,
 } from 'react-native-paper';
-import {
-  addDataPointDialogVisibleAtom,
-  chartDataAtom,
-  SortDirection,
-} from '../context/atoms';
+import {addDataPointDialogVisibleAtom, dataPointsAtom} from '../context/atoms';
 
 const styles = StyleSheet.create({
   inputValue: {
@@ -23,13 +19,13 @@ const styles = StyleSheet.create({
 
 const AddDataPointDialog = () => {
   const [inputValue, setInputValue] = useState('');
-  const [chartData, setChartData] = useAtom(chartDataAtom);
+  const [dataPoints, setDataPoints] = useAtom(dataPointsAtom);
   const [addDataPointDialogVisible, setAddDataPointDialogVisible] = useAtom(
     addDataPointDialogVisibleAtom,
   );
 
   const addDataPoint = () => {
-    chartData.push({
+    dataPoints.push({
       date: new Date(),
       label: new Date().toLocaleDateString('en-US', {
         month: 'numeric',
@@ -38,7 +34,7 @@ const AddDataPointDialog = () => {
       value: Number(inputValue),
       unit: 'lbs',
     });
-    setChartData({sortDirection: SortDirection.DESC});
+    setDataPoints(dataPoints);
     setAddDataPointDialogVisible(false);
     closeDialog();
   };

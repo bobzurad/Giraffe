@@ -1,11 +1,11 @@
 import {useCallback} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {useAtom} from 'jotai';
+import {useAtomValue} from 'jotai';
 import {Divider, IconButton, List} from 'react-native-paper';
-import {chartDataAtom} from '../context/atoms';
+import {listDataAtom} from '../context/atoms';
 
 const DataPointList = () => {
-  const [chartData] = useAtom(chartDataAtom);
+  const dataPoints = useAtomValue(listDataAtom);
 
   const editIcon = useCallback(
     () => (
@@ -33,7 +33,7 @@ const DataPointList = () => {
   return (
     <FlatList
       contentContainerStyle={styles.flatListContainer}
-      data={chartData}
+      data={dataPoints}
       keyExtractor={item => item.date + Math.random().toString()}
       ItemSeparatorComponent={itemSeparator}
       renderItem={({item}) => {

@@ -1,12 +1,6 @@
 import {atom} from 'jotai';
 
-// --------------- Types & Enums --------------------------------- //
-
-export enum SortDirection {
-  ASC,
-  DESC,
-  NONE, // do not sort
-}
+// --------------- Types ----------------------------------------- //
 
 type DataPoint = {
   date: Date;
@@ -16,10 +10,6 @@ type DataPoint = {
 };
 
 type DataPoints = DataPoint[];
-
-type SetChartDataArgs = {
-  sortDirection: SortDirection;
-};
 
 // --------------- Internal Functions ---------------------------- //
 
@@ -34,9 +24,9 @@ function getLabel(numDays: number): string {
   });
 }
 
-// --------------- Internal Atoms -------------------------------- //
+// --------------- Seed Data ------------------------------------- //
 
-const _chartDataAtom = atom([
+const seedData = [
   {
     date: getDateMinusDays(5),
     label: getLabel(5),
@@ -61,38 +51,104 @@ const _chartDataAtom = atom([
     value: 146,
     unit: 'lbs',
   },
-] as DataPoints);
+] as DataPoints;
 
-// --------------- Atoms used by Components ---------------------- //
+// --------------- Internal Atoms -------------------------------- //
 
-export const chartDataAtom = atom(
-  // components use the data sorted by date
+const _dataPointsAtom = atom([...seedData]);
+const _chartDataAtom = atom([...seedData]);
+const _listDataAtom = atom([...seedData]);
+
+const __chartDataAtom = atom(
   get => {
-    // sort the data when getting the data
-    const chartData = get(_chartDataAtom);
-    return chartData.sort((a, b) => {
+    // chart data is sorted asc
+    return get(_chartDataAtom).sort((a, b) => {
+      return a.date.getTime() - b.date.getTime();
+    });
+  },
+  (get, set, updatedDataPoints: DataPoints) => {
+    set(
+      _chartDataAtom,
+      updatedDataPoints.sort((a, b) => {
+        return a.date.getTime() - b.date.getTime();
+      }),
+    );
+  },
+);
+
+const __listDataAtom = atom(
+  get => {
+    // list data is sorted desc
+    return get(_listDataAtom).sort((a, b) => {
       return b.date.getTime() - a.date.getTime();
     });
   },
-  // setter uses args object to determine if sort should happen
-  (get, set, args: SetChartDataArgs) => {
-    if (args.sortDirection === SortDirection.ASC) {
-      set(_chartDataAtom, chartData =>
-        chartData.sort((a, b) => {
-          return a.date.getTime() - b.date.getTime();
-        }),
-      );
-    } else if (args.sortDirection === SortDirection.DESC) {
-      set(_chartDataAtom, chartData =>
-        chartData.sort((a, b) => {
-          return b.date.getTime() - a.date.getTime();
-        }),
-      );
-    } else {
-      // do not sort
-      set(_chartDataAtom, chartData => chartData);
-    }
+  (get, set, updatedDataPoints: DataPoints) => {
+    set(
+      _listDataAtom,
+      updatedDataPoints.sort((a, b) => {
+        return b.date.getTime() - a.date.getTime();
+      }),
+    );
   },
 );
+
+// --------------- Atoms used by Components ---------------------- //
+
+// read/write atom for data points
+export const dataPointsAtom = atom(
+  get => get(_dataPointsAtom),
+  (get, set, updatedDataPoints: DataPoints) => {
+    set(_dataPointsAtom, updatedDataPoints);
+    // set derived atoms
+    set(__chartDataAtom, [
+      ...updatedDataPoints.sort((a, b) => {
+        return a.date.getTime() - b.date.getTime();
+      }),
+    ]);
+    set(__listDataAtom, [
+      ...updatedDataPoints.sort((a, b) => {
+        return b.date.getTime() - a.date.getTime();
+      }),
+    ]);
+  },
+);
+
+// read-only atom that components use to read chart data
+export const chartDataAtom = atom(get => get(__chartDataAtom));
+
+// read-only atom that components use to read list data
+export const listDataAtom = atom(get => get(__listDataAtom));
+
+
+// export const chartDataAtom = atom(
+//   // components use the data sorted by date
+//   get => {
+//     // sort the data when getting the data
+//     const chartData = get(_chartDataAtom);
+//     return chartData.sort((a, b) => {
+//       return b.date.getTime() - a.date.getTime();
+//     });
+//   },
+//   // setter uses args object to determine if sort should happen
+//   (get, set, args: SetChartDataArgs) => {
+//     if (args.sortDirection === SortDirection.ASC) {
+//       set(_chartDataAtom, chartData =>
+//         chartData.sort((a, b) => {
+//           return a.date.getTime() - b.date.getTime();
+//         }),
+//       );
+//     } else if (args.sortDirection === SortDirection.DESC) {
+//       set(_chartDataAtom, chartData =>
+//         chartData.sort((a, b) => {
+//           return b.date.getTime() - a.date.getTime();
+//         }),
+//       );
+//     } else {
+//       // do not sort
+//       set(_chartDataAtom, chartData => chartData);
+//     }
+//   },
+// );
 
 export const addDataPointDialogVisibleAtom = atom(false);
