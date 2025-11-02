@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
   },
 });
 
+// TODO: implement scrolling by month: https://gifted-charts.web.app/linechart/#scrollRef
+
 const LineChartDemo = () => {
   const dataPoints = useAtomValue(chartDataAtom);
 
