@@ -1,74 +1,25 @@
 import {atom} from 'jotai';
+import {DataPoint} from './types';
+import {seedData} from './data';
 
-// --------------- Types ----------------------------------------- //
+// --------------- Internal Atoms (do not export!!!) ------------- //
 
-type DataPoint = {
-  date: Date;
-  label: string;
-  value: number;
-  unit: string;
-};
+// atom configs define the data types and inital values for the derived atoms
+const _dataPointsAtomConfig = atom<DataPoint[]>([...seedData]);
+const _chartDataAtomConfig = atom<DataPoint[]>([...seedData]);
+const _listDataAtomConfig = atom<DataPoint[]>([...seedData]);
 
-type DataPoints = DataPoint[];
-
-// --------------- Internal Functions ---------------------------- //
-
-function getDateMinusDays(numDays: number): Date {
-  return new Date(new Date().setDate(new Date().getDate() - numDays));
-}
-
-function getLabel(numDays: number): string {
-  return getDateMinusDays(numDays).toLocaleDateString('en-US', {
-    month: 'numeric',
-    day: 'numeric',
-  });
-}
-
-// --------------- Seed Data ------------------------------------- //
-
-const seedData = [
-  {
-    date: getDateMinusDays(5),
-    label: getLabel(5),
-    value: 160,
-    unit: 'lbs',
-  },
-  {
-    date: getDateMinusDays(3),
-    label: getLabel(3),
-    value: 150,
-    unit: 'lbs',
-  },
-  {
-    date: getDateMinusDays(4),
-    label: getLabel(4),
-    value: 143,
-    unit: 'lbs',
-  },
-  {
-    date: getDateMinusDays(2),
-    label: getLabel(2),
-    value: 146,
-    unit: 'lbs',
-  },
-] as DataPoints;
-
-// --------------- Internal Atoms -------------------------------- //
-
-const _dataPointsAtom = atom([...seedData]);
-const _chartDataAtom = atom([...seedData]);
-const _listDataAtom = atom([...seedData]);
-
-const __chartDataAtom = atom(
+// derived atom that defines rules when getting and setting data
+const _chartDataAtom = atom(
   get => {
     // chart data is sorted asc
-    return get(_chartDataAtom).sort((a, b) => {
+    return get(_chartDataAtomConfig).sort((a, b) => {
       return a.date.getTime() - b.date.getTime();
     });
   },
-  (get, set, updatedDataPoints: DataPoints) => {
+  (get, set, updatedDataPoints: DataPoint[]) => {
     set(
-      _chartDataAtom,
+      _chartDataAtomConfig,
       updatedDataPoints.sort((a, b) => {
         return a.date.getTime() - b.date.getTime();
       }),
@@ -76,16 +27,17 @@ const __chartDataAtom = atom(
   },
 );
 
-const __listDataAtom = atom(
+// derived atom that defines rules when getting and setting data
+const _listDataAtom = atom(
   get => {
     // list data is sorted desc
-    return get(_listDataAtom).sort((a, b) => {
+    return get(_listDataAtomConfig).sort((a, b) => {
       return b.date.getTime() - a.date.getTime();
     });
   },
-  (get, set, updatedDataPoints: DataPoints) => {
+  (get, set, updatedDataPoints: DataPoint[]) => {
     set(
-      _listDataAtom,
+      _listDataAtomConfig,
       updatedDataPoints.sort((a, b) => {
         return b.date.getTime() - a.date.getTime();
       }),
@@ -95,18 +47,18 @@ const __listDataAtom = atom(
 
 // --------------- Atoms used by Components ---------------------- //
 
-// read/write atom for data points
+// this is the main read/write atom for data points
 export const dataPointsAtom = atom(
-  get => get(_dataPointsAtom),
-  (get, set, updatedDataPoints: DataPoints) => {
-    set(_dataPointsAtom, updatedDataPoints);
+  get => get(_dataPointsAtomConfig),
+  (get, set, updatedDataPoints: DataPoint[]) => {
+    set(_dataPointsAtomConfig, updatedDataPoints);
     // set derived atoms
-    set(__chartDataAtom, [
+    set(_chartDataAtom, [
       ...updatedDataPoints.sort((a, b) => {
         return a.date.getTime() - b.date.getTime();
       }),
     ]);
-    set(__listDataAtom, [
+    set(_listDataAtom, [
       ...updatedDataPoints.sort((a, b) => {
         return b.date.getTime() - a.date.getTime();
       }),
@@ -114,41 +66,10 @@ export const dataPointsAtom = atom(
   },
 );
 
-// read-only atom that components use to read chart data
-export const chartDataAtom = atom(get => get(__chartDataAtom));
+// derived read-only atom that components use to read chart data
+export const chartDataAtom = atom(get => get(_chartDataAtom));
 
-// read-only atom that components use to read list data
-export const listDataAtom = atom(get => get(__listDataAtom));
-
-
-// export const chartDataAtom = atom(
-//   // components use the data sorted by date
-//   get => {
-//     // sort the data when getting the data
-//     const chartData = get(_chartDataAtom);
-//     return chartData.sort((a, b) => {
-//       return b.date.getTime() - a.date.getTime();
-//     });
-//   },
-//   // setter uses args object to determine if sort should happen
-//   (get, set, args: SetChartDataArgs) => {
-//     if (args.sortDirection === SortDirection.ASC) {
-//       set(_chartDataAtom, chartData =>
-//         chartData.sort((a, b) => {
-//           return a.date.getTime() - b.date.getTime();
-//         }),
-//       );
-//     } else if (args.sortDirection === SortDirection.DESC) {
-//       set(_chartDataAtom, chartData =>
-//         chartData.sort((a, b) => {
-//           return b.date.getTime() - a.date.getTime();
-//         }),
-//       );
-//     } else {
-//       // do not sort
-//       set(_chartDataAtom, chartData => chartData);
-//     }
-//   },
-// );
+// derived read-only atom that components use to read list data
+export const listDataAtom = atom(get => get(_listDataAtom));
 
 export const addDataPointDialogVisibleAtom = atom(false);
