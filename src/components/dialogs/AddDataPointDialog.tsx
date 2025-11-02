@@ -8,12 +8,14 @@ import {
   Portal,
   TextInput,
 } from 'react-native-paper';
-import {addDataPointDialogVisibleAtom, dataPointsAtom} from '../context/atoms';
+import {
+  addDataPointDialogVisibleAtom,
+  dataPointsAtom,
+} from '../../context/atoms';
 
 const styles = StyleSheet.create({
   inputValue: {
     fontSize: 32,
-    width: '80%',
   },
 });
 
@@ -35,7 +37,6 @@ const AddDataPointDialog = () => {
       unit: 'lbs',
     });
     setDataPoints(dataPoints);
-    setAddDataPointDialogVisible(false);
     closeDialog();
   };
 

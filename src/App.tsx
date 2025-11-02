@@ -14,7 +14,8 @@ import {addDataPointDialogVisibleAtom} from './context/atoms';
 import WelcomeSection from './components/WelcomeSection';
 import LineChartDemo from './components/LineChartDemo';
 import DataPointList from './components/DataPointList';
-import AddDataPointDialog from './components/AddDataPointDialog';
+import AddDataPointDialog from './components/dialogs/AddDataPointDialog';
+import DeleteDataPointDialog from './components/dialogs/DeleteDataPointDialog';
 
 function App(): React.JSX.Element {
   const [, setAddDataPointDialogVisible] = useAtom(
@@ -52,6 +53,7 @@ function App(): React.JSX.Element {
         />
       </Portal>
       <AddDataPointDialog />
+      <DeleteDataPointDialog />
     </SafeAreaView>
   );
 }

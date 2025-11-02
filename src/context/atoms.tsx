@@ -72,4 +72,6 @@ export const chartDataAtom = atom(get => get(_chartDataAtom));
 // derived read-only atom that components use to read list data
 export const listDataAtom = atom(get => get(_listDataAtom));
 
+// flags for dialogs visible
 export const addDataPointDialogVisibleAtom = atom(false);
+export const deleteDataPointDialogVisibleAtom = atom(false);
