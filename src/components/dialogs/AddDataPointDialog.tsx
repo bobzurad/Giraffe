@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useAtom} from 'jotai';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 import {
   Button,
   Dialog,
@@ -28,6 +30,7 @@ const AddDataPointDialog = () => {
 
   const addDataPoint = () => {
     dataPoints.push({
+      id: uuidv4(),
       date: new Date(),
       label: new Date().toLocaleDateString('en-US', {
         month: 'numeric',
