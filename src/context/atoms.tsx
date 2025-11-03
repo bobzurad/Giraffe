@@ -73,5 +73,6 @@ export const chartDataAtom = atom(get => get(_chartDataAtom));
 export const listDataAtom = atom(get => get(_listDataAtom));
 
 // flags for dialogs visible
-export const addDataPointDialogVisibleAtom = atom(false);
-export const deleteDataPointDialogVisibleAtom = atom(false);
+export const addDataPointDialogVisibleAtom = atom<boolean>(false);
+export const deleteDataPointDialogVisibleAtom = atom<boolean>(false);
+export const selectedDataPointAtom = atom<string>('');

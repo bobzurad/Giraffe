@@ -2,13 +2,18 @@ import {useCallback} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {useAtom, useAtomValue} from 'jotai';
 import {Divider, IconButton, List} from 'react-native-paper';
-import {deleteDataPointDialogVisibleAtom, listDataAtom} from '../context/atoms';
+import {
+  deleteDataPointDialogVisibleAtom,
+  selectedDataPointAtom,
+  listDataAtom,
+} from '../context/atoms';
 
 const DataPointList = () => {
   const dataPoints = useAtomValue(listDataAtom);
   const [, setDeleteDataPointDialogVisible] = useAtom(
     deleteDataPointDialogVisibleAtom,
   );
+  const [, setSelectedDataPointAtom] = useAtom(selectedDataPointAtom);
 
   const editIcon = useCallback(
     () => (
@@ -22,13 +27,16 @@ const DataPointList = () => {
   );
 
   const deleteIcon = useCallback(
-    () => (
+    (selectedId: string) => (
       <IconButton
         icon="trash-can-outline"
-        onPress={() => setDeleteDataPointDialogVisible(true)}
+        onPress={() => {
+          setSelectedDataPointAtom(selectedId);
+          setDeleteDataPointDialogVisible(true);
+        }}
       />
     ),
-    [setDeleteDataPointDialogVisible],
+    [setSelectedDataPointAtom, setDeleteDataPointDialogVisible],
   );
 
   const itemSeparator = useCallback(() => <Divider />, []);
@@ -45,8 +53,8 @@ const DataPointList = () => {
             style={styles.itemContainer}
             title={item.value.toString() + ' ' + item.unit}
             description={item.date?.toDateString()}
-            left={editIcon}
-            right={deleteIcon}
+            left={() => editIcon()}
+            right={() => deleteIcon(item.id)}
           />
         );
       }}
