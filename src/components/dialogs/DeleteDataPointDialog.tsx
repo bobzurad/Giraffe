@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     paddingTop: '20%',
   },
   date: {
+    textAlign: 'center',
     fontSize: 18,
     paddingTop: '20%',
   },
