@@ -31,7 +31,8 @@ asdf install nodejs
 
 Once Java and NodeJS are installed, run `npm install`
 
-~~If you're on macOS, also run `cd ios` and `pod install`~~
+If you're on macOS, also run `cd ios && pod install`
+ * Note: `cd ios && pod install` is being deprecated and replaced with `yarn install`
 
 ### iOS
 
